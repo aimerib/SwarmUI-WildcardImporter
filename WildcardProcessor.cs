@@ -149,6 +149,170 @@ namespace Spoomples.Extensions.WildcardImporter
             Logs.Info($"ZIP file processed: {zipPath}");
         }
 
+        // private async Task ProcessYamlFile(string taskId, string yamlContent, string yamlPath)
+        // {
+        //     Logs.Info($"Processing YAML file: {yamlPath}");
+        //     var parser = new YamlParser();
+        //     var parsedYaml = parser.Parse(yamlContent);
+
+        //     foreach (var topLevelKvp in parsedYaml)
+        //     {
+        //         string topLevelKey = topLevelKvp.Key;
+        //         var topLevelValue = topLevelKvp.Value;
+        //         Logs.Info($"Top-level key: {topLevelKey}");
+        //         Logs.Info($"Top-level value: {YamlParser.SerializeObject(topLevelValue)}");
+
+        //         if (topLevelValue is Dictionary<string, object> firstLevelMap)
+        //         {
+        //             foreach (var firstLevelKvp in firstLevelMap)
+        //             {
+        //                 string firstLevelKey = firstLevelKvp.Key;
+        //                 var firstLevelValue = firstLevelKvp.Value;
+        //                 Logs.Info($"First-level key: {firstLevelKey}");
+        //                 Logs.Info($"First-level value: {YamlParser.SerializeObject(firstLevelValue)}");
+
+        //                 if (firstLevelValue is Dictionary<string, object> secondLevelMap)
+        //                 {
+        //                     Logs.Info($"Second-level map found for {firstLevelKey}");
+        //                     // For categories like scifi_jobs and modern_jobs
+        //                     await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, secondLevelMap);
+        //                 }
+        //                 else if (firstLevelValue is List<object> firstLevelList)
+        //                 {
+        //                     Logs.Info($"First-level list found for {firstLevelKey}");
+        //                     // Handle cases where second level is a list directly
+        //                     await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, firstLevelList);
+        //                 }
+        //             }
+        //         }
+        //         else if (topLevelValue is List<object> topLevelList)
+        //         {
+        //             await CreateCategoryFiles(taskId, topLevelKey, topLevelKey, topLevelList);
+        //             Logs.Info($"Top-level list processed: {topLevelKey}");
+        //         }
+        //     }
+        //     Logs.Info($"YAML file processed: {yamlPath}");
+        // }
+
+        // private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, Dictionary<string, object> subCategories)
+        // {
+        //     // Path for the main category
+        //     string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
+        //     Logs.Info($"Creating category files for {categoryKey} in {categoryFolderPath}");
+
+        //     // Ensure the main category directory exists
+        //     Directory.CreateDirectory(categoryFolderPath);
+
+        //     // Path for the main category .txt file
+        //     string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
+        //     Logs.Info($"Main category file path: {mainCategoryFilePath}");
+        //     List<string> mainCategoryLines = new List<string>();
+
+        //     foreach (var subKvp in subCategories)
+        //     {
+        //         string subCategoryKey = subKvp.Key;
+        //         var subCategoryValue = subKvp.Value;
+
+        //         if (subCategoryValue is List<object> items)
+        //         {
+        //             Logs.Info($"Sub-category {subCategoryKey} value is list");
+        //             if (items.Count == 1)
+        //             {
+        //                 Logs.Info($"Sub-category {subCategoryKey} value is single-item list");
+        //                 // Single-item list: add to main category .txt
+        //                 string line = items[0] as string;
+        //                 if (line != null)
+        //                 {
+        //                     Logs.Info($"Adding single-item line to main category: {line}");
+        //                     string processedLine = ProcessWildcardLine(line);
+        //                     mainCategoryLines.Add(processedLine);
+        //                 }
+        //             }
+        //             else if (items.Count > 1)
+        //             {
+        //                 Logs.Info($"Processing multi-item list for {subCategoryKey}");
+        //                 // Multi-item list: create subcategory .txt within a folder
+        //                 string subCategoryFolderPath = Path.Combine(categoryFolderPath, categoryKey);
+        //                 Logs.Info($"Sub-category folder path: {subCategoryFolderPath}");
+        //                 Directory.CreateDirectory(subCategoryFolderPath);
+
+        //                 string subCategoryFilePath = Path.Combine(subCategoryFolderPath, $"{subCategoryKey}.txt");
+        //                 Logs.Info($"Subcategory file path: {subCategoryFilePath}");
+        //                 List<string> subCategoryLines = new List<string>();
+
+        //                 foreach (var item in items)
+        //                 {
+        //                     if (item is string line)
+        //                     {
+        //                         string processedLine = ProcessWildcardLine(line);
+        //                         subCategoryLines.Add(processedLine);
+        //                     }
+        //                 }
+
+        //                 await File.WriteAllLinesAsync(subCategoryFilePath, subCategoryLines);
+        //                 _tasks[taskId].ProcessedFiles++;
+        //                 Logs.Info($"Subcategory file created: {subCategoryFilePath}");
+        //             }
+        //         }
+        //         if (subCategoryValue is Dictionary<string, object> subCategoryMap)
+        //         {
+        //             List<object> subCategoryList = new List<object>();
+        //             foreach (var subsubKvp in subCategoryMap)
+        //             {
+        //                 string subSubCategoryKey = subsubKvp.Key;
+        //                 var subSubCategoryValue = subsubKvp.Value;
+        //                 Logs.Info($"Sub-sub-category {subSubCategoryKey} value: {YamlParser.SerializeObject(subSubCategoryValue)}");
+        //                 if (subSubCategoryValue is List<object> subSubCategoryList)
+        //                 {
+        //                     subCategoryList.AddRange(subSubCategoryList);
+        //                 }
+        //                 if (subSubCategoryValue is Dictionary<string, object> subSubCategoryMap)
+        //                 {
+        //                     await CreateCategoryFiles(taskId, topLevelKey, subSubCategoryKey, subSubCategoryMap);
+        //                 }
+        //             }
+        //             Logs.Info($"Sub-category {subCategoryKey} value is map");
+        //             await CreateCategoryFiles(taskId, topLevelKey, subCategoryKey, subCategoryList);
+        //         }
+        //     }
+
+        //     // Write the main category .txt file if there are any single-item entries
+        //     if (mainCategoryLines.Any())
+        //     {
+        //         await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
+        //         _tasks[taskId].ProcessedFiles++;
+        //         Logs.Info($"Main category file created: {mainCategoryFilePath}");
+        //     }
+        // }
+
+        // private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, List<object> items)
+        // {
+        //     // Path for the main category
+        //     string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
+
+        //     // Ensure the main category directory exists
+        //     Directory.CreateDirectory(categoryFolderPath);
+
+        //     List<string> mainCategoryLines = new List<string>();
+
+        //     foreach (var item in items)
+        //     {
+        //         if (item is string line)
+        //         {
+        //             string processedLine = ProcessWildcardLine(line);
+        //             mainCategoryLines.Add(processedLine);
+        //         }
+        //     }
+
+        //     // Path for the main category .txt file
+        //     string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
+
+        //     await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
+        //     _tasks[taskId].ProcessedFiles++;
+        //     Logs.Info($"Main category file created: {mainCategoryFilePath}");
+
+        // }
+
         private async Task ProcessYamlFile(string taskId, string yamlContent, string yamlPath)
         {
             Logs.Info($"Processing YAML file: {yamlPath}");
@@ -162,155 +326,90 @@ namespace Spoomples.Extensions.WildcardImporter
                 Logs.Info($"Top-level key: {topLevelKey}");
                 Logs.Info($"Top-level value: {YamlParser.SerializeObject(topLevelValue)}");
 
-                if (topLevelValue is Dictionary<string, object> firstLevelMap)
-                {
-                    foreach (var firstLevelKvp in firstLevelMap)
-                    {
-                        string firstLevelKey = firstLevelKvp.Key;
-                        var firstLevelValue = firstLevelKvp.Value;
-                        Logs.Info($"First-level key: {firstLevelKey}");
-                        Logs.Info($"First-level value: {YamlParser.SerializeObject(firstLevelValue)}");
-
-                        if (firstLevelValue is Dictionary<string, object> secondLevelMap)
-                        {
-                            Logs.Info($"Second-level map found for {firstLevelKey}");
-                            // For categories like scifi_jobs and modern_jobs
-                            await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, secondLevelMap);
-                        }
-                        else if (firstLevelValue is List<object> firstLevelList)
-                        {
-                            Logs.Info($"First-level list found for {firstLevelKey}");
-                            // Handle cases where second level is a list directly
-                            await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, firstLevelList);
-                        }
-                    }
-                }
-                else if (topLevelValue is List<object> topLevelList)
-                {
-                    await CreateCategoryFiles(taskId, topLevelKey, topLevelKey, topLevelList);
-                    Logs.Info($"Top-level list processed: {topLevelKey}");
-                }
+                await TraverseYaml(taskId, topLevelKey, topLevelKey, topLevelValue);
             }
             Logs.Info($"YAML file processed: {yamlPath}");
         }
 
-        private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, Dictionary<string, object> subCategories)
+        private async Task TraverseYaml(string taskId, string topLevelKey, string currentKey, object currentValue)
         {
-            // Path for the main category
-            string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
-            Logs.Info($"Creating category files for {categoryKey} in {categoryFolderPath}");
-
-            // Ensure the main category directory exists
-            Directory.CreateDirectory(categoryFolderPath);
-
-            // Path for the main category .txt file
-            string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
-            Logs.Info($"Main category file path: {mainCategoryFilePath}");
-            List<string> mainCategoryLines = new List<string>();
-
-            foreach (var subKvp in subCategories)
+            if (currentValue is Dictionary<string, object> currentMap)
             {
-                string subCategoryKey = subKvp.Key;
-                var subCategoryValue = subKvp.Value;
-
-                if (subCategoryValue is List<object> items)
+                Logs.Info($"Processing map for key: {currentKey}");
+                foreach (var kvp in currentMap)
                 {
-                    Logs.Info($"Sub-category {subCategoryKey} value is list");
-                    if (items.Count == 1)
-                    {
-                        Logs.Info($"Sub-category {subCategoryKey} value is single-item list");
-                        // Single-item list: add to main category .txt
-                        string line = items[0] as string;
-                        if (line != null)
-                        {
-                            Logs.Info($"Adding single-item line to main category: {line}");
-                            string processedLine = ProcessWildcardLine(line);
-                            mainCategoryLines.Add(processedLine);
-                        }
-                    }
-                    else if (items.Count > 1)
-                    {
-                        Logs.Info($"Processing multi-item list for {subCategoryKey}");
-                        // Multi-item list: create subcategory .txt within a folder
-                        string subCategoryFolderPath = Path.Combine(categoryFolderPath, categoryKey);
-                        Logs.Info($"Sub-category folder path: {subCategoryFolderPath}");
-                        Directory.CreateDirectory(subCategoryFolderPath);
+                    string key = kvp.Key;
+                    var value = kvp.Value;
+                    Logs.Info($"Key: {key}");
+                    Logs.Info($"Value: {YamlParser.SerializeObject(value)}");
 
-                        string subCategoryFilePath = Path.Combine(subCategoryFolderPath, $"{subCategoryKey}.txt");
-                        Logs.Info($"Subcategory file path: {subCategoryFilePath}");
-                        List<string> subCategoryLines = new List<string>();
-
-                        foreach (var item in items)
-                        {
-                            if (item is string line)
-                            {
-                                string processedLine = ProcessWildcardLine(line);
-                                subCategoryLines.Add(processedLine);
-                            }
-                        }
-
-                        await File.WriteAllLinesAsync(subCategoryFilePath, subCategoryLines);
-                        _tasks[taskId].ProcessedFiles++;
-                        Logs.Info($"Subcategory file created: {subCategoryFilePath}");
-                    }
-                }
-                if (subCategoryValue is Dictionary<string, object> subCategoryMap)
-                {
-                    List<object> subCategoryList = new List<object>();
-                    foreach (var subsubKvp in subCategoryMap)
-                    {
-                        string subSubCategoryKey = subsubKvp.Key;
-                        var subSubCategoryValue = subsubKvp.Value;
-                        Logs.Info($"Sub-sub-category {subSubCategoryKey} value: {YamlParser.SerializeObject(subSubCategoryValue)}");
-                        if (subSubCategoryValue is List<object> subSubCategoryList)
-                        {
-                            subCategoryList.AddRange(subSubCategoryList);
-                        }
-                        if (subSubCategoryValue is Dictionary<string, object> subSubCategoryMap)
-                        {
-                            await CreateCategoryFiles(taskId, topLevelKey, subSubCategoryKey, subSubCategoryMap);
-                        }
-                    }
-                    Logs.Info($"Sub-category {subCategoryKey} value is map");
-                    await CreateCategoryFiles(taskId, topLevelKey, subCategoryKey, subCategoryList);
+                    await TraverseYaml(taskId, topLevelKey, key, value);
                 }
             }
-
-            // Write the main category .txt file if there are any single-item entries
-            if (mainCategoryLines.Any())
+            else if (currentValue is List<object> currentList)
             {
-                await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
-                _tasks[taskId].ProcessedFiles++;
-                Logs.Info($"Main category file created: {mainCategoryFilePath}");
+                Logs.Info($"Processing list for key: {currentKey}");
+                if (currentList.Count == 1 && currentList[0] is string singleItem)
+                {
+                    Logs.Info($"Single-item list for key: {currentKey}");
+                    string processedLine = ProcessWildcardLine(singleItem);
+                    await WriteToMainCategory(taskId, topLevelKey, currentKey, processedLine);
+                }
+                else
+                {
+                    Logs.Info($"Multi-item list for key: {currentKey}");
+                    List<string> processedLines = new List<string>();
+                    foreach (var item in currentList)
+                    {
+                        if (item is string line)
+                        {
+                            processedLines.Add(ProcessWildcardLine(line));
+                        }
+                        else if (item is Dictionary<string, object> subMap)
+                        {
+                            foreach (var subKvp in subMap)
+                            {
+                                await TraverseYaml(taskId, topLevelKey, subKvp.Key, subKvp.Value);
+                            }
+                        }
+                    }
+
+                    if (processedLines.Any())
+                    {
+                        await WriteToMainCategory(taskId, topLevelKey, currentKey, processedLines);
+                    }
+                }
+            }
+            else if (currentValue is string stringValue)
+            {
+                Logs.Info($"Processing string value for key: {currentKey}");
+                string processedLine = ProcessWildcardLine(stringValue);
+                await WriteToMainCategory(taskId, topLevelKey, currentKey, processedLine);
             }
         }
 
-        private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, List<object> items)
+        private async Task WriteToMainCategory(string taskId, string topLevelKey, string categoryKey, string line)
         {
-            // Path for the main category
-            string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
-
-            // Ensure the main category directory exists
+            string categoryFolderPath = Path.Combine(destinationFolder, topLevelKey);
             Directory.CreateDirectory(categoryFolderPath);
 
-            List<string> mainCategoryLines = new List<string>();
-
-            foreach (var item in items)
-            {
-                if (item is string line)
-                {
-                    string processedLine = ProcessWildcardLine(line);
-                    mainCategoryLines.Add(processedLine);
-                }
-            }
-
-            // Path for the main category .txt file
             string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
+            Logs.Info($"Adding line to main category file: {mainCategoryFilePath}");
 
-            await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
+            await File.AppendAllLinesAsync(mainCategoryFilePath, new List<string> { line });
             _tasks[taskId].ProcessedFiles++;
-            Logs.Info($"Main category file created: {mainCategoryFilePath}");
+        }
 
+        private async Task WriteToMainCategory(string taskId, string topLevelKey, string categoryKey, List<string> lines)
+        {
+            string categoryFolderPath = Path.Combine(destinationFolder, topLevelKey);
+            Directory.CreateDirectory(categoryFolderPath);
+
+            string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
+            Logs.Info($"Writing lines to main category file: {mainCategoryFilePath}");
+
+            await File.WriteAllLinesAsync(mainCategoryFilePath, lines);
+            _tasks[taskId].ProcessedFiles++;
         }
 
         private async Task ProcessTextContent(string taskId, string content, string fileName)
@@ -331,7 +430,7 @@ namespace Spoomples.Extensions.WildcardImporter
             line = System.Text.RegularExpressions.Regex.Replace(line, @"__(\w+)__", match => $"<wildcard:{match.Groups[1].Value}>");
 
             // Replace {} random selections
-            line = System.Text.RegularExpressions.Regex.Replace(line, @"\{([^}]+)\}", match => $"<random:{match.Groups[1].Value.Replace("|", ">")}>");
+            line = System.Text.RegularExpressions.Regex.Replace(line, @"\{([^}]+)\}", match => $"<random:{match.Groups[1].Value.Replace(" ", "")}>");
 
             return line;
         }
@@ -430,7 +529,7 @@ namespace Spoomples.Extensions.WildcardImporter
         public int ProcessedFiles;
         public ProcessingStatusEnum Status;
         public ConcurrentBag<string> Errors = new();
-        public ConcurrentDictionary<string, string> Backups= new();
+        public ConcurrentDictionary<string, string> Backups = new();
         public ConcurrentBag<ConflictInfo> Conflicts = new();
     }
 
