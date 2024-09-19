@@ -11,6 +11,8 @@ namespace Spoomples.Extensions.WildcardImporter
             ScriptFiles.Add("Assets/wildcard_importer.js");
             ScriptFiles.Add("Assets/dropzone-min.js");
             StyleSheetFiles.Add("Assets/dropzone.css");
+            OtherAssets.Add("Assets/dropzone-min.js.map");
+            OtherAssets.Add("Assets/dropzone.css.map");
         }
 
         public override void OnInit()

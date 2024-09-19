@@ -1,0 +1,42 @@
+<!-- WildcardImporterTab -->
+<div class="tab-pane" id="wildcardimportertabcontent" role="tabpanel">
+  <div class="card border-secondary mb-3">
+    <div class="card-header translate">Wildcard Importer</div>
+    <div class="card-body">
+      <p class="card-text translate">
+        Current destination folder:
+        <span id="wildcardImporter-destination-folder"></span>
+      </p>
+      <p class="card-text translate">Drop files here or click to select:</p>
+      <div id="wildcardImporter-dropzone" class="dropzone"></div>
+      <input
+        type="file"
+        id="wildcardImporter-file-input"
+        multiple
+        style="display: none"
+      />
+      <button
+        id="wildcardImporter-process-wildcards"
+        class="basic-button translate"
+        style="margin-top: 10px"
+      >
+        Process Wildcards
+      </button>
+      <button
+        id="wildcardImporter-undo-processing"
+        class="basic-button translate"
+        style="margin-top: 10px"
+      >
+        Undo Last Processing
+      </button>
+      <div
+        id="wildcardImporter-processing-status"
+        style="margin-top: 20px"
+      ></div>
+      <div
+        id="wildcardImporter-processing-history"
+        style="margin-top: 20px"
+      ></div>
+    </div>
+  </div>
+</div>
