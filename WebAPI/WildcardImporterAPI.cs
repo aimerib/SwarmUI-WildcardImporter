@@ -6,6 +6,9 @@ using SwarmUI.Accounts;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
 
 
 namespace Spoomples.Extensions.WildcardImporter
@@ -23,6 +26,7 @@ namespace Spoomples.Extensions.WildcardImporter
             API.RegisterAPICall(GetProcessingHistory);
             API.RegisterAPICall(ResolveConflict);
             API.RegisterAPICall(GetDestinationFolder);
+            // API.RegisterAPICall(ProcessWildcardsWithStatus);
             // API.RegisterAPICall(SetDestinationFolder);
         }
 
@@ -110,6 +114,63 @@ namespace Spoomples.Extensions.WildcardImporter
         //         ["success"] = success,
         //         ["message"] = success ? "Destination folder set successfully" : "Failed to set destination folder"
         //     };
+        // }
+
+        // TODO: In progress
+        // public static async Task ProcessWildcardsWithStatus(WebSocket socket, Session session,
+        // [API.APIParameter("The number of images to generate.")] int images,
+        // [API.APIParameter("Raw mapping of input should contain general T2I parameters (see listing on Generate tab of main interface) to values, eg `{ \"prompt\": \"a photo of a cat\", \"model\": \"OfficialStableDiffusion/sd_xl_base_1.0\", \"steps\": 20, ... }`. Note that this is the root raw map, ie all params go on the same level as `images`, `session_id`, etc.")] JObject rawInput)
+        // {
+        //     if (context.WebSockets.IsWebSocketRequest)
+        //     {
+        //         using WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        //         string filesJson = context.Request.Query["filesJson"];
+
+        //         if (string.IsNullOrEmpty(filesJson))
+        //         {
+        //             await SendMessageAsync(webSocket, "Error: 'filesJson' parameter is missing.");
+        //             await webSocket.CloseAsync(WebSocketCloseStatus.InvalidPayloadData, "Missing filesJson", CancellationToken.None);
+        //             return;
+        //         }
+
+        //         try
+        //         {
+        //             var filesData = JsonConvert.DeserializeObject<List<FileData>>(filesJson);
+        //             string taskId = await _processor.ProcessFilesAsync(filesData, async (status) =>
+        //             {
+        //                 string statusJson = JsonConvert.SerializeObject(status);
+        //                 await SendMessageAsync(webSocket, statusJson);
+        //             });
+
+        //             await SendMessageAsync(webSocket, JsonConvert.SerializeObject(new
+        //             {
+        //                 success = true,
+        //                 message = "Processing started",
+        //                 taskId = taskId
+        //             }));
+
+        //             // Wait for the processing to complete
+        //             await _processor.WaitForProcessingToCompleteAsync(taskId);
+        //             await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Processing completed", CancellationToken.None);
+        //         }
+        //         catch (Exception ex)
+        //         {
+        //             await SendMessageAsync(webSocket, $"Error starting processing: {ex.Message}");
+        //             await webSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Processing error", CancellationToken.None);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         context.Response.StatusCode = 400;
+        //         await context.Response.WriteAsync("WebSocket connection expected.");
+        //     }
+        // }
+
+        // private static async Task SendMessageAsync(WebSocket socket, string message)
+        // {
+        //     var messageBuffer = Encoding.UTF8.GetBytes(message);
+        //     var segment = new ArraySegment<byte>(messageBuffer);
+        //     await socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
         // }
     }
 }

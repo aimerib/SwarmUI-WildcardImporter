@@ -149,170 +149,6 @@ namespace Spoomples.Extensions.WildcardImporter
             Logs.Info($"ZIP file processed: {zipPath}");
         }
 
-        // private async Task ProcessYamlFile(string taskId, string yamlContent, string yamlPath)
-        // {
-        //     Logs.Info($"Processing YAML file: {yamlPath}");
-        //     var parser = new YamlParser();
-        //     var parsedYaml = parser.Parse(yamlContent);
-
-        //     foreach (var topLevelKvp in parsedYaml)
-        //     {
-        //         string topLevelKey = topLevelKvp.Key;
-        //         var topLevelValue = topLevelKvp.Value;
-        //         Logs.Info($"Top-level key: {topLevelKey}");
-        //         Logs.Info($"Top-level value: {YamlParser.SerializeObject(topLevelValue)}");
-
-        //         if (topLevelValue is Dictionary<string, object> firstLevelMap)
-        //         {
-        //             foreach (var firstLevelKvp in firstLevelMap)
-        //             {
-        //                 string firstLevelKey = firstLevelKvp.Key;
-        //                 var firstLevelValue = firstLevelKvp.Value;
-        //                 Logs.Info($"First-level key: {firstLevelKey}");
-        //                 Logs.Info($"First-level value: {YamlParser.SerializeObject(firstLevelValue)}");
-
-        //                 if (firstLevelValue is Dictionary<string, object> secondLevelMap)
-        //                 {
-        //                     Logs.Info($"Second-level map found for {firstLevelKey}");
-        //                     // For categories like scifi_jobs and modern_jobs
-        //                     await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, secondLevelMap);
-        //                 }
-        //                 else if (firstLevelValue is List<object> firstLevelList)
-        //                 {
-        //                     Logs.Info($"First-level list found for {firstLevelKey}");
-        //                     // Handle cases where second level is a list directly
-        //                     await CreateCategoryFiles(taskId, topLevelKey, firstLevelKey, firstLevelList);
-        //                 }
-        //             }
-        //         }
-        //         else if (topLevelValue is List<object> topLevelList)
-        //         {
-        //             await CreateCategoryFiles(taskId, topLevelKey, topLevelKey, topLevelList);
-        //             Logs.Info($"Top-level list processed: {topLevelKey}");
-        //         }
-        //     }
-        //     Logs.Info($"YAML file processed: {yamlPath}");
-        // }
-
-        // private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, Dictionary<string, object> subCategories)
-        // {
-        //     // Path for the main category
-        //     string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
-        //     Logs.Info($"Creating category files for {categoryKey} in {categoryFolderPath}");
-
-        //     // Ensure the main category directory exists
-        //     Directory.CreateDirectory(categoryFolderPath);
-
-        //     // Path for the main category .txt file
-        //     string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
-        //     Logs.Info($"Main category file path: {mainCategoryFilePath}");
-        //     List<string> mainCategoryLines = new List<string>();
-
-        //     foreach (var subKvp in subCategories)
-        //     {
-        //         string subCategoryKey = subKvp.Key;
-        //         var subCategoryValue = subKvp.Value;
-
-        //         if (subCategoryValue is List<object> items)
-        //         {
-        //             Logs.Info($"Sub-category {subCategoryKey} value is list");
-        //             if (items.Count == 1)
-        //             {
-        //                 Logs.Info($"Sub-category {subCategoryKey} value is single-item list");
-        //                 // Single-item list: add to main category .txt
-        //                 string line = items[0] as string;
-        //                 if (line != null)
-        //                 {
-        //                     Logs.Info($"Adding single-item line to main category: {line}");
-        //                     string processedLine = ProcessWildcardLine(line);
-        //                     mainCategoryLines.Add(processedLine);
-        //                 }
-        //             }
-        //             else if (items.Count > 1)
-        //             {
-        //                 Logs.Info($"Processing multi-item list for {subCategoryKey}");
-        //                 // Multi-item list: create subcategory .txt within a folder
-        //                 string subCategoryFolderPath = Path.Combine(categoryFolderPath, categoryKey);
-        //                 Logs.Info($"Sub-category folder path: {subCategoryFolderPath}");
-        //                 Directory.CreateDirectory(subCategoryFolderPath);
-
-        //                 string subCategoryFilePath = Path.Combine(subCategoryFolderPath, $"{subCategoryKey}.txt");
-        //                 Logs.Info($"Subcategory file path: {subCategoryFilePath}");
-        //                 List<string> subCategoryLines = new List<string>();
-
-        //                 foreach (var item in items)
-        //                 {
-        //                     if (item is string line)
-        //                     {
-        //                         string processedLine = ProcessWildcardLine(line);
-        //                         subCategoryLines.Add(processedLine);
-        //                     }
-        //                 }
-
-        //                 await File.WriteAllLinesAsync(subCategoryFilePath, subCategoryLines);
-        //                 _tasks[taskId].ProcessedFiles++;
-        //                 Logs.Info($"Subcategory file created: {subCategoryFilePath}");
-        //             }
-        //         }
-        //         if (subCategoryValue is Dictionary<string, object> subCategoryMap)
-        //         {
-        //             List<object> subCategoryList = new List<object>();
-        //             foreach (var subsubKvp in subCategoryMap)
-        //             {
-        //                 string subSubCategoryKey = subsubKvp.Key;
-        //                 var subSubCategoryValue = subsubKvp.Value;
-        //                 Logs.Info($"Sub-sub-category {subSubCategoryKey} value: {YamlParser.SerializeObject(subSubCategoryValue)}");
-        //                 if (subSubCategoryValue is List<object> subSubCategoryList)
-        //                 {
-        //                     subCategoryList.AddRange(subSubCategoryList);
-        //                 }
-        //                 if (subSubCategoryValue is Dictionary<string, object> subSubCategoryMap)
-        //                 {
-        //                     await CreateCategoryFiles(taskId, topLevelKey, subSubCategoryKey, subSubCategoryMap);
-        //                 }
-        //             }
-        //             Logs.Info($"Sub-category {subCategoryKey} value is map");
-        //             await CreateCategoryFiles(taskId, topLevelKey, subCategoryKey, subCategoryList);
-        //         }
-        //     }
-
-        //     // Write the main category .txt file if there are any single-item entries
-        //     if (mainCategoryLines.Any())
-        //     {
-        //         await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
-        //         _tasks[taskId].ProcessedFiles++;
-        //         Logs.Info($"Main category file created: {mainCategoryFilePath}");
-        //     }
-        // }
-
-        // private async Task CreateCategoryFiles(string taskId, string topLevelKey, string categoryKey, List<object> items)
-        // {
-        //     // Path for the main category
-        //     string categoryFolderPath = Path.Combine(destinationFolder, $"{topLevelKey}");
-
-        //     // Ensure the main category directory exists
-        //     Directory.CreateDirectory(categoryFolderPath);
-
-        //     List<string> mainCategoryLines = new List<string>();
-
-        //     foreach (var item in items)
-        //     {
-        //         if (item is string line)
-        //         {
-        //             string processedLine = ProcessWildcardLine(line);
-        //             mainCategoryLines.Add(processedLine);
-        //         }
-        //     }
-
-        //     // Path for the main category .txt file
-        //     string mainCategoryFilePath = Path.Combine(categoryFolderPath, $"{categoryKey}.txt");
-
-        //     await File.WriteAllLinesAsync(mainCategoryFilePath, mainCategoryLines);
-        //     _tasks[taskId].ProcessedFiles++;
-        //     Logs.Info($"Main category file created: {mainCategoryFilePath}");
-
-        // }
-
         private async Task ProcessYamlFile(string taskId, string yamlContent, string yamlPath)
         {
             Logs.Info($"Processing YAML file: {yamlPath}");
@@ -435,18 +271,18 @@ namespace Spoomples.Extensions.WildcardImporter
             return line;
         }
 
-        public ProcessingStatus GetStatus(string taskId)
+        public ProgressStatus GetStatus(string taskId)
         {
             if (_tasks.TryGetValue(taskId, out var task))
             {
-                return new ProcessingStatus
+                return new ProgressStatus
                 {
                     Status = task.Status.ToString(),
                     Progress = (float)task.ProcessedFiles / task.TotalFiles,
                     Conflicts = task.Conflicts.ToList()
                 };
             }
-            return new ProcessingStatus { Status = "Not Found" };
+            return new ProgressStatus { Status = "Not Found" };
         }
 
         public async Task<bool> UndoProcessing(string taskId)
@@ -520,24 +356,88 @@ namespace Spoomples.Extensions.WildcardImporter
 
             return newPath;
         }
+
+        public async Task<string> ProcessFilesAsync(List<FileData> filesData, Func<ProgressStatus, Task> statusCallback)
+        {
+            string taskId = Guid.NewGuid().ToString();
+            var processingTask = new ProcessingTask
+            {
+                Id = taskId,
+                Files = filesData,
+                StatusCallback = statusCallback
+            };
+
+            _tasks[taskId] = processingTask;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    // Initialize processing
+                    processingTask.ProgressStatus = new ProgressStatus
+                    {
+                        Status = "Started",
+                        Progress = 0,
+                        Conflicts = new()
+                    };
+                    await processingTask.StatusCallback(processingTask.ProgressStatus);
+
+                    // Example processing loop
+                    for (int i = 1; i <= 100; i++)
+                    {
+                        // Simulate processing work
+                        await Task.Delay(100);
+
+                        // Update progress
+                        processingTask.ProgressStatus.Progress = i;
+                        await processingTask.StatusCallback(processingTask.ProgressStatus);
+                    }
+
+                    processingTask.ProgressStatus.Status = "Completed";
+                    await processingTask.StatusCallback(processingTask.ProgressStatus);
+                }
+                catch (Exception ex)
+                {
+                    processingTask.ProgressStatus.Status = "Error";
+                    processingTask.ProgressStatus.Message = ex.Message;
+                    await processingTask.StatusCallback(processingTask.ProgressStatus);
+                }
+            });
+
+            return taskId;
+        }
+
+        public async Task WaitForProcessingToCompleteAsync(string taskId)
+        {
+            if (_tasks.ContainsKey(taskId))
+            {
+                var processingTask = _tasks[taskId];
+                await processingTask.CompletionSource.Task;
+            }
+        }
     }
 
     public class ProcessingTask
     {
         public string Id;
+        public List<FileData> Files;
         public int TotalFiles;
         public int ProcessedFiles;
         public ProcessingStatusEnum Status;
+        public ProgressStatus ProgressStatus;
         public ConcurrentBag<string> Errors = new();
         public ConcurrentDictionary<string, string> Backups = new();
         public ConcurrentBag<ConflictInfo> Conflicts = new();
+        public TaskCompletionSource<bool> CompletionSource = new();
+        public Func<ProgressStatus, Task> StatusCallback;
     }
 
-    public struct ProcessingStatus
+    public struct ProgressStatus
     {
         public string Status;
         public float Progress;
         public List<ConflictInfo> Conflicts;
+        public string Message;
     }
 
     public enum ProcessingStatusEnum
